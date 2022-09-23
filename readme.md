@@ -140,6 +140,126 @@ public class Application {
 > 1. @Component, @Service, @Repository 애너테이션이 붙은 클래스를 정의한다
 > 2. @Configuration 애너테이션이 붙은 클래스에 스프링 빈을 생성하기 위한 @Bean 생성자 메서드를 정의한다.
 
+<br/>
+<br/>
+
+## ✔ 스프링 부트 컨트롤러
+Controller 클래스는 서비스의 엔드포인트를 노출하고 유입되는 HTTP 요청 데이터를 요청을 처리할 자바 메서드와 매핑한다.
+
+
+##### ✏ LicenseServiceController
+
+```java
+import com.thoughtmechanix.licenses.model.License;
+import com.thoughtmechanix.licenses.services.LicenseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@RestController
+@RequestMapping(value="v1/organizations/{organizationId}/licenses")
+public class LicenseServiceController {
+    @Autowired
+    private LicenseService licenseService;
+
+    @RequestMapping(value="/{licenseId}",method = RequestMethod.GET)
+    public License getLicenses(@PathVariable("organizationId") String organizationId, @PathVariable("licenseId") String licenseId) {
+        //return licenseService.getLicense(licenseId);
+        return new License()
+                .withId(licenseId)
+                .withOrganizationId(organizationId)
+                .withProductName("Teleco")
+                .withLicenseType("Seat");
+    }
+
+    @RequestMapping(value="{licenseId}",method = RequestMethod.PUT)
+    public String updateLicenses(@PathVariable("licenseId") String licenseId) {
+        return String.format("This is the put");
+    }
+
+    @RequestMapping(value="{licenseId}",method = RequestMethod.POST)
+    public String saveLicenses(@PathVariable("licenseId") String licenseId) {
+        return String.format("This is the post");
+    }
+
+    @RequestMapping(value="{licenseId}",method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deleteLicenses(@PathVariable("licenseId") String licenseId) {
+        return String.format("This is the Delete");
+    }
+}
+```
+
+|키워드| 설명                                                                             |
+|:---|:-------------------------------------------------------------------------------|
+|@RestController| REST 기반 서비스라 명시하고 서비스 요청 및 응답을 JSON으로 자동으로 직렬화 및 역직렬화한다.                       |
+|@RequestMapping(value="v1/organizations/{organizationId}/licenses")| 이 클래스의 모든 HTTP 엔드포인트는 /v1/organization/{organizationId}/licenses 경로를 기반으로 노출된다 |
+|@RequestMapping(value="/{licenseId}",method = RequestMethod.GET)| /v1/organization/{organizationId}/licenses/{licenseId}로 GET 엔드포인트를 생성한다        |
+|getLicenses(@PathVariable("organizationId") String organizationId, @PathVariable("licenseId") String licenseId)| URL의 두 매개변수 organizationId, licenseId를 매서드 매개변수로 매핑한다                          |
+
+<br/>
+
+##### 📑 @RestController의 이해
+@RestController는 클래스 수준의 자바 애너테이션으로 스프링 컨테이너에 이 자바 클래스가 REST 기반 서비스에 사용된다고 알리는 역할을 한다. 서비스에 JSON이나 XML로 전달된 데이터의 직렬화를 자동으로 처리하며, 전통적인 스프링 @Controller와 달리 Controller 클래스에서 ResponseBody 클래스로 반환할 필요가 없는데, @RestController 에 @ResponseBoody가 포함되기 때문이다.
+
+<br/>
+
+##### 📑 엔드포인트 네이밍 규칙
+1. ✏ 서비스가 제공하는 리소스를 알 수 있는 명확한 URL 이름을 사용할 것
+2. ✏ 리소스 간 관계를 알 수 있는 URL을 사용할 것
+3. ✏ URL 버전 체계를 일찍 세울 것
+URL과 엔드포인트는 서비스 소유자와 서비스 소비자 간 계약을 의미함. 일반적 패턴 중 하나는 모든 엔드포인트 앞에 버전 번호를 붙이는 것임
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br/>
+
+##### 📑 REST 이해
+| 특징                                  | 설명                                                                                                                   |
+|:------------------------------------|:---------------------------------------------------------------------------------------------------------------------|
+| 서비스 호출 프로토콜로 HTTP를 사용               | 서비스는 HTTP 엔드포틴트로 노출되고 HTTP 프로토콜을 사용해 서비스와 데이터를 교환한다                                                                  |
+| 서비스 행동 양식을 HTTP 표준 동사에 매핑           | REST 서비스의 행동 양식을 HTTP 동사인 POST, GET, PUT, DELETE에 매핑함. 그리고 이 동사는 CRUD 함수에 매핑함                                        |
+| 서비스끼리 교환하는 모든 데이터 직렬화 형식으로 JSON을 사용 | JSON은 마이크로서비스에서 입출력 데이터의 직렬화를 위한 거의 표준이 되었음. JSON은 자바스크립트 기반 웹 프런트엔드에 사용되는 데이터 직렬화 및 역질렬화를 위한 원시 형식 (native format)임 |
+| HTTP 상태 코드를 사용해 서비스 호출 상태를 전달       | HTTP 프로토콜은 서비스의 성공, 실패 상태 등을 상태 코드로 나타냄.                                                                             |
+
+
+> 서비스간 통신을 위해 JSON보다 효율적인 매커니즘 프로토콜도 존재함. Apache Thrift 프레임워크를 이요하면 바이너리 프로토콜로 서로 통신할 수 있는 다중 언어 서비스를 구축할 수 있따. Apache Avro는 클라이언트와 서버 호출 간 데이터를 바이너리 포맷으로 상호 변환할 수 있는 데이터 직렬화 프로토콜이다.
+
+
+
+
+
+
+
+
+
+
 
 
 

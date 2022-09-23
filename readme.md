@@ -1,12 +1,12 @@
-## ⭐ 스프링부트로 간단한 마이크로서비스 생성
+# ⭐ 스프링부트로 간단한 마이크로서비스 생성
 
 
 <br/>
 
-#### ✔ 의존성 추가
+## ✔ 의존성 추가
 
-- license-service/pom.xml
 
+##### ✏️ license-service/pom.xml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -105,3 +105,69 @@
 |spring-boot-starter-web| Spring MVC를 사용하여 RESTful을 포함한 웹 애플리케이션을 구축하기 위한 시작 장치로 Tomcat을 기본 내장 컨테이너로 사용할 수 있게 해줌                 |
 |spring-boot-devtools| Spring Boot에서 개발 편의를 위해 제공하는 라이브러리로 클래스 로딩 문제 진단, 속성 기본값, 자동 재시작, 라이브 리로드, 전역 설정, 원격 애플리케이션 등의 기능을 제공함 |
 |<artifactId>maven-resources-plugin</artifactId>| 메이븐에 스프링 부트 애플리케이션의 빌드와 배포를 위한 스프링 전용 메이븐 플러그인을 포함하도록 지시                                               |
+
+<br/>
+<br/>
+
+## ✔ 스프링 부트 애플리케이션 부팅
+
+스프링 부트로 간단한 마이크로서비스를 시작한 후 반복하며 기능을 전달하기 위해선 라이선싱 서비스의 마이크로서비스에 다음 2개의 클래스를 생성해야 한다.
+
+- 스프링 부트가 애프리케이션을 시작하고 초기화하는 데 사용되는 Spring Bootstrap 클래스
+- 마이크로서비스에서 호출할 수 있는 HTTP 엔드포인트를 노출하는 Spring Controller 클래스
+
+#### ✏ Application.java
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+| 키워드                                            | 설명                                                                  |
+|:-----------------------------------------------|:--------------------------------------------------------------------|
+| @SpringBootApplication                         | @SpringBootApplication는 스프링 부트 프레임워크에 이 클래스가 프로젝트의 부트스트랩 클래스라고 지시한다 |
+| SpringApplication.run(Application.class, args) | 스프링 부트 서비스를 시작하기 위해 호출한다                                            |
+
+@SpringBootApplication는 자바 클래스 경로에 다른 스프링 빈이 있는지 찾기 위해 모든 클래스를 스캔한다.
+
+> ##### 📑 스프링 빈은 다음 애너테이션을 사용해 정의할 수 있다.
+> 1. @Component, @Service, @Repository 애너테이션이 붙은 클래스를 정의한다
+> 2. @Configuration 애너테이션이 붙은 클래스에 스프링 빈을 생성하기 위한 @Bean 생성자 메서드를 정의한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

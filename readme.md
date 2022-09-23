@@ -201,6 +201,10 @@ public class LicenseServiceController {
 |@RequestMapping(value="/{licenseId}",method = RequestMethod.GET)| /v1/organization/{organizationId}/licenses/{licenseId}로 GET 엔드포인트를 생성한다        |
 |getLicenses(@PathVariable("organizationId") String organizationId, @PathVariable("licenseId") String licenseId)| URL의 두 매개변수 organizationId, licenseId를 매서드 매개변수로 매핑한다                          |
 
+##### ✏  <a href='https://documenter.getpostman.com/view/23389689/2s7ZLdLYbC'>포스트맨 api 테스트 결과</a>
+
+![](readmefile/img.png)
+
 <br/>
 
 ##### 📑 @RestController의 이해

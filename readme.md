@@ -109,6 +109,20 @@
 <br/>
 <br/>
 
+> ## ⭐ 서비스 모니터링(Service Monitoring) - 마이크로서비스의 상태 전달
+> 서비스 디스커버리 에이전트는 클라이언트에 서빗스 위치 안내의 역할을 넘어 등록된 각 서비스 상태를 모니터링 한다. 그리고 클라이언트가 고장 난 서비스를 호출하지 않도록 자신의 라우팅 테이블에서 문제가 된 서비스 인스턴스를 제거한다.
+>
+> ![](https://velog.velcdn.com/images/gun_123/post/ba2a1c9f-9199-490a-b29d-759c6ab9751d/image.png)
+>
+> 마이크로서비스가 실행되면 service discovery agent는 해당 서비스가 가용한지 확인하기 위해 상태 확인 인터페이스(health check interface)를 계속 모니터링하고 핑(ping)한다.
+> 특정 service instance에 문제를 발견하면 service discovery agent는 해당 instance를 정지시키거나 새로운 서비슬를 추가하는 등 조치를 취한다.
+> REST 기반 microservice 환경에서 health check interface는 일반적으로 JSON 페이로드와 HTTP 상태 코드를 반환하는 HTTP 엔드포인트를 노출하는 것이다.
+>스프링 부트 환경에서 엔드포인트를 노출하기 위해선 Spring Actuator 모듈만 추가하면 된다. Spring Actuator는 서비스 상태를 이해하고 관리하는 데 도움이 되는 엔드포인트를 기본 기능으로 제공한다.
+
+
+<br/>
+<br/>
+
 ## ✔ 스프링 부트 애플리케이션 부팅
 
 스프링 부트로 간단한 마이크로서비스를 시작한 후 반복하며 기능을 전달하기 위해선 라이선싱 서비스의 마이크로서비스에 다음 2개의 클래스를 생성해야 한다.
